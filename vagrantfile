@@ -1,0 +1,31 @@
+# Edit the Vagrantfile
+
+# Specify the number of virtual machines you would like to create
+num_machines = 3
+
+# Configure the network settings for the virtual machines
+config.vm.network "forwarded_port", guest: 80, host: 8080
+
+# Set up the provider for the virtual machines
+config.vm.provider "virtualbox"
+
+# Select the OS and version for the virtual machines
+config.vm.box = "ubuntu/focal64"
+
+# Specify the memory and CPU settings for the virtual machines
+config.vm.provider "virtualbox" do |vb|
+  vb.memory = "2048"
+  vb.cpus = "2"
+end
+
+# Specify any other configuration settings you would like to include
+config.vm.provision "shell", inline: <<-SHELL
+  sudo apt-get update
+  sudo apt-get install docker.io -y
+  sudo apt-get install kubeadm -y
+SHELL
+
+# Create the virtual machines
+1.upto(num_machines) do |i|
+  config.vm.define "machine#{i}"
+end "do i add this to the vagrantfile i got after i ran vagrant init or delete the old vagrantfile?"
